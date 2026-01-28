@@ -15,10 +15,10 @@
   }
 
   // Map clean URL to actual HTML file
-function resolveUrl(path) {
-  if (path === "/") return "index.html";
-  return path.endsWith(".html") ? path : path.slice(1) + ".html";
-}
+  function resolveUrl(path) {
+    if (path === "/") return "index.html";
+    return path.endsWith(".html") ? path : path.slice(1) + ".html";
+  }
 
   // Main function to navigate to a new page via fetch
   async function navigate(url, push = true) {
@@ -47,6 +47,9 @@ function resolveUrl(path) {
       // Parse HTML string into a DOM document
       const doc = new DOMParser().parseFromString(html, "text/html");
 
+      // Hide body before replacing content to prevent flash
+      document.body.style.visibility = 'hidden';
+
       // Replace current body with the new page's body
       document.body.innerHTML = doc.body.innerHTML;
 
@@ -63,8 +66,8 @@ function resolveUrl(path) {
         document.head.appendChild(ns);
       });
 
-       // Show body after everything is processed
-        document.body.style.visibility = 'visible';
+      // Show body after everything is processed
+      document.body.style.visibility = 'visible';
 
       // Push the new URL into browser history if requested
       if (push) history.pushState(null, "", url);

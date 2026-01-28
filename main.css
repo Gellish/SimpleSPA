@@ -1,4 +1,5 @@
   body {
+      visibility: hidden; /* Prevent FOUC, revealed by parser.js */
       font-family: Arial, sans-serif;
       line-height: 1.6;
       margin: 0;
