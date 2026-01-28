@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@popperjs/core": "^2.11.8",
+    "@tailwindcss/vite": "^4.1.18",
     "bootstrap": "^5.3.8",
+    "tailwindcss": "^4.1.18",
     "vite": "^7.3.1"
   }
 }

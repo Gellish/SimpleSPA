@@ -12,43 +12,77 @@
 
 <body>
     @include('/includes/nav.html')
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="card shadow-lg border-0 rounded-3">
-                    <div class="card-body p-5">
-                        <h1 class="text-center mb-4">Get in Touch</h1>
-                        <p class="text-center text-muted mb-5">Have a question or want to work together? Fill out the
-                            form below.</p>
+        <div class="mx-auto my-12 max-w-7xl px-4 h-[100vh]">
+            <div class="flex justify-center">
+                <div class="w-full max-w-3xl">
+                    <div class="rounded-2xl bg-white shadow-lg">
+                        <div class="p-8 md:p-12">
+                            <h1 class="mb-4 text-center text-3xl font-bold">
+                                Get in Touch
+                            </h1>
 
-                        <form onsubmit="event.preventDefault(); alert('Message sent (demo only)!');">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control form-control-lg" id="name" placeholder="John Doe"
-                                    required>
-                            </div>
+                            <p class="mb-8 text-center text-gray-500">
+                                Have a question or want to work together? Fill out the form below.
+                            </p>
 
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control form-control-lg" id="email"
-                                    placeholder="name@example.com" required>
-                            </div>
+                            <form onsubmit="event.preventDefault(); alert('Message sent (demo only)!');">
+                                <!-- Name -->
+                                <div class="mb-5">
+                                    <label for="name" class="mb-1 block text-sm font-medium text-gray-700">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        placeholder="John Doe"
+                                        required
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
 
-                            <div class="mb-4">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control form-control-lg" id="message" rows="5"
-                                    placeholder="Your message..." required></textarea>
-                            </div>
+                                <!-- Email -->
+                                <div class="mb-5">
+                                    <label for="email" class="mb-1 block text-sm font-medium text-gray-700">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        placeholder="name@example.com"
+                                        required
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
-                            </div>
-                        </form>
+                                <!-- Message -->
+                                <div class="mb-6">
+                                    <label for="message" class="mb-1 block text-sm font-medium text-gray-700">
+                                        Message
+                                    </label>
+                                    <textarea
+                                        id="message"
+                                        rows="5"
+                                        placeholder="Your message..."
+                                        required
+                                        class="w-full rounded-lg border border-gray-300 px-4 py-3 text-lg focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    ></textarea>
+                                </div>
+
+                                <!-- Submit -->
+                                <div>
+                                    <button
+                                        type="submit"
+                                        class="w-full rounded-lg bg-blue-600 py-3 text-lg font-semibold text-white hover:bg-blue-700"
+                                    >
+                                        Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>

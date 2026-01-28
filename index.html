@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/parser.js"></script>
+    <script src="/assets/js/spa-frame.js"></script>
+    <script type="module" src="/assets/js/main.js"></script>
+  </head>
 
-<head>
-  <title>Home</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="/assets/js/parser.js"></script>
-  <script src="/assets/js/spa-frame.js"></script>
-  <script type="module" src="/assets/js/main.js"></script>
-</head>
+  <body>
+    @include('/includes/nav.html')
+    <div class="mx-auto max-w-7xl px-4">
+      <div class="flex min-h-[70vh] items-center justify-center">
+        <div class="text-center">
+          <h1
+            class="mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl lg:text-6xl"
+          >
+            Single Page Application
+          </h1>
 
-<body>
-  @include('/includes/nav.html')
-  <div class="container">
+          <p class="mx-auto mb-4 max-w-2xl text-lg text-gray-500 md:text-xl">
+            Powered by <span class="font-medium text-gray-700">Vite</span>,
+            <span class="font-medium text-gray-700">Tailwind CSS</span>, and
+            <span class="font-medium text-gray-700"
+            >Laravel-style Includes</span>.
+          </p>
 
-    <div class="row">
-      <div class="col-12 text-center mt-5">
-        <h1 class="display-4 fw-bold text-primary">Single Page Application</h1>
-        <p class="lead text-secondary">
-          Powered by Vite, Bootstrap 5, and Laravel-style Includes.
-        </p>
-        <hr class="my-4">
-        <p>This page is fully styled with Bootstrap.</p>
-        <button class="btn btn-primary btn-lg" type="button" onclick="alert('Bootstrap JS is working!')">Test
-          Interaction</button>
+          <div
+            class="mx-auto mb-6 h-px w-24 bg-gradient-to-r from-blue-500 to-purple-500"
+          >
+          </div>
+
+          <p class="mb-8 text-gray-600">
+            This page is fully styled with Tailwind CSS.
+          </p>
+
+          <button
+            type="button"
+            onclick="alert('Tailwind + JS is working!')"
+            class="rounded-xl bg-blue-600 px-8 py-3 text-lg font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-blue-700"
+          >
+            Test Interaction
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</body>
-
+  </body>
 </html>
+

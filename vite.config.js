@@ -1,6 +1,7 @@
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import fs from 'fs'
+import tailwindcss from '@tailwindcss/vite'
 
 // Helper to recursively process @include directives
 function processIncludes(html) {
@@ -28,6 +29,7 @@ export default defineConfig({
         },
     },
     plugins: [
+        tailwindcss(),
         {
             name: 'clean-urls',
             configureServer(server) {

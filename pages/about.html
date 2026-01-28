@@ -12,30 +12,55 @@
 
 <body>
     @include('/includes/nav.html')
-    <div class="container mt-5">
-        <div class="row align-items-center">
-            <div class="col-md-6 mb-4 mb-md-0">
-                <img src="/assets/images/profile_illustration.png" class="img-fluid rounded shadow-lg"
-                    alt="Profile Illustration">
-            </div>
-            <div class="col-md-6">
-                <h1 class="display-4 mb-3">About Me</h1>
-                <p class="lead text-muted">A passionate developer building modern web experiences.</p>
-                <hr>
-                <p>Hello! I'm a full-stack developer who loves creating clean, efficient, and user-friendly
-                    applications.
-                    This simple website demonstrates a custom "Micro-Framework" approach using Vite, Bootstrap, and
-                    Vanilla JS.</p>
-                <p>It mimics the feel of a Single Page Application (SPA) without the complexity of React or Vue,
-                    providing
-                    instant navigation and a smooth user experience.</p>
-                <div class="mt-4">
-                    <a href="/contact" class="btn btn-primary btn-lg me-2">Contact Me</a>
-                    <a href="/" class="btn btn-outline-secondary btn-lg">Back Home</a>
+        <div class="mx-auto mt-12 max-w-7xl px-4">
+            <div class="flex flex-col items-center gap-10 md:flex-row">
+                <!-- Image -->
+                <div class="w-full md:w-1/2">
+                    <img
+                        src="/assets/images/profile_illustration.png"
+                        alt="Profile Illustration"
+                        class="w-full rounded-lg shadow-lg"
+                    />
+                </div>
+
+                <!-- Content -->
+                <div class="w-full md:w-1/2">
+                    <h1 class="mb-3 text-4xl font-bold md:text-5xl">About Me</h1>
+                    <p class="mb-4 text-lg text-gray-500">
+                        A passionate developer building modern web experiences.
+                    </p>
+
+                    <hr class="mb-4 border-gray-200" />
+
+                    <p class="mb-4 text-gray-700">
+                        Hello! I'm a full-stack developer who loves creating clean, efficient, and
+                        user-friendly applications. This simple website demonstrates a custom
+                        "Micro-Framework" approach using Vite, Bootstrap, and Vanilla JS.
+                    </p>
+
+                    <p class="mb-6 text-gray-700">
+                        It mimics the feel of a Single Page Application (SPA) without the complexity
+                        of React or Vue, providing instant navigation and a smooth user experience.
+                    </p>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-wrap gap-3">
+                        <a
+                            href="/contact"
+                            class="rounded-lg bg-blue-600 px-6 py-3 text-lg font-medium text-white hover:bg-blue-700"
+                        >
+                            Contact Me
+                        </a>
+                        <a
+                            href="/"
+                            class="rounded-lg border border-gray-400 px-6 py-3 text-lg font-medium text-gray-700 hover:bg-gray-100"
+                        >
+                            Back Home
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
