@@ -116,15 +116,17 @@ Modern browsers block `fetch()` for local files.
 
 ### ✅ FASTEST OPTION (Recommended)
 
-```bash
-npx serve .
-```
+1. Install dependencies (first time only):
+   ```bash
+   npm install
+   ```
 
-Then open:
+2. Start the server:
+   ```bash
+   npm run dev
+   ```
 
-```
-http://localhost:3000
-```
+3. Open the link shown in the terminal (usually `http://localhost:5173`).
 
 ---
 
