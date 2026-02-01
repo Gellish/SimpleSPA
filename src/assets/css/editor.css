@@ -1,0 +1,139 @@
+/* Editor Styles Extracted from editor.html */
+
+/* Editor.js Polish */
+.codex-editor {
+    z-index: 10;
+    position: relative;
+    color: #000 !important;
+    text-align: left;
+}
+
+.ce-block {
+    margin-bottom: 0 !important;
+}
+
+.ce-block__content,
+.ce-toolbar__content {
+    max-width: none;
+}
+
+.ce-paragraph {
+    line-height: 1.6;
+    padding: 0.3rem 0 !important;
+}
+
+.ce-header {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Title Input Polish */
+.title-input {
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    background: #fff !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 1.5rem;
+    color: #212529;
+    width: 100%;
+}
+
+.title-input:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}
+
+.title-input::placeholder {
+    color: #ced4da;
+    font-weight: 400;
+}
+
+/* Drag and Drop Handling */
+.drag-handle {
+    cursor: grab;
+    padding: 5px;
+    color: #adb5bd;
+    transition: color 0.2s;
+}
+
+.drag-handle:hover {
+    color: #6c757d;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
+}
+
+.list-group-item.dragging {
+    opacity: 0.5;
+    background: #e9ecef;
+}
+
+.list-group-item.drag-over {
+    border-top: 2px solid #0d6efd;
+}
+
+/* Helper Styles */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+/* EasyMDE Polish */
+.EasyMDEContainer {
+    margin-top: 0.5rem;
+}
+
+.editor-toolbar {
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.CodeMirror {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-color: #dee2e6;
+    min-height: 300px;
+}
+
+/* Image Upload UI */
+.image-preview-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px dashed #dee2e6;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.image-preview-wrapper:hover {
+    border-color: #0d6efd;
+    background: #eef6ff;
+}
+
+.image-preview-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-preview-placeholder {
+    color: #adb5bd;
+    font-size: 1.5rem;
+}

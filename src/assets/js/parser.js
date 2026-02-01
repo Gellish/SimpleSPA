@@ -528,7 +528,10 @@ IncludeParser.run = async function (root = document.documentElement) {
       // Pass 5: Handle Universal Forms (Auth)
       const formsChanged = await processFormsInDOM(root);
 
-      contentChanged = contentChanged || foreachChanged || contextChanged || formsChanged;
+      // Pass 6: Handle Dynamic Components
+      const componentsChanged = await processComponentsInDOM(root);
+
+      contentChanged = contentChanged || foreachChanged || contextChanged || formsChanged || componentsChanged;
       any = includesChanged || contentChanged;
 
       console.log(`[IncludeParser] pass ${pass} done — changed=${any}`);
@@ -630,6 +633,35 @@ async function processContentBlocksInDOM(root) {
   return changed;
 }
 
+// 🔹 Universal Components: Dynamic Hydration
+async function processComponentsInDOM(root) {
+  const components = root.querySelectorAll('[data-component]:not([data-processed])');
+  if (components.length === 0) return false;
+
+  console.log(`[IncludeParser] Found ${components.length} components to hydrate`);
+
+  for (const el of components) {
+    el.setAttribute('data-processed', 'true');
+    const componentName = el.getAttribute('data-component');
+
+    try {
+      // Dynamic Import based on convention: src/assets/js/modules/[name].js
+      const module = await import(`/src/assets/js/modules/${componentName}.js`);
+      if (module && module.init) {
+        await module.init(el);
+        console.log(`[IncludeParser] Hydrated: ${componentName}`);
+      } else {
+        console.warn(`[IncludeParser] Module ${componentName} missing init()`);
+      }
+    } catch (e) {
+      console.error(`[IncludeParser] Failed to load component: ${componentName}`, e);
+      el.innerHTML = `<div class="alert alert-danger">Component Error: ${e.message}</div>`;
+    }
+  }
+
+  return false; // Components handle their own rendering, usually don't trigger re-parse of siblings
+}
+
 // 🔹 Universal Forms: Zero-Script Auth & Actions
 async function processFormsInDOM(root) {
   const forms = root.querySelectorAll('form[data-action]:not([data-processed])');
@@ -641,9 +673,12 @@ async function processFormsInDOM(root) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // 1. Zero-Script Confirmation
+      // 1. Zero-Script Confirmation with Modal
       const confirmMsg = form.getAttribute('data-confirm');
-      if (confirmMsg && !confirm(confirmMsg)) return;
+      if (confirmMsg) {
+        const { showConfirm } = await import('/src/assets/js/ui.js');
+        if (!await showConfirm(confirmMsg)) return;
+      }
 
       const action = form.getAttribute('data-action');
       const redirect = form.getAttribute('data-redirect'); // Optional
@@ -847,7 +882,7 @@ IncludeParser.getLocalPosts = function () {
     return {
       ...entry.metadata,
       id: entry.metadata.slug || entry.metadata.id || 'local-' + Math.random().toString(36).substr(2, 9),
-      content: entry.rawFull,
+      content: entry.rawBody,
       source: 'local',
       path: entry.path
     };
