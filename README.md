@@ -1,5 +1,5 @@
 # 🚀 Vanilla SPA Framework: Offline-First Edition
-> **Version 1.5.0 "Adonis Alignment"**
+> **Latest: v1.5.0 "Adonis Alignment"** | **Origin: v1.0.0 "Experimental"**
 > *A technical exploration into high-performance, zero-dependency SPA architecture.*
 
 ---
@@ -56,7 +56,19 @@ The folder structure is strictly aligned with **AdonisJS v6** conventions to ens
 
 ---
 
-## 🛠 Quick Start
+## � Release History
+
+### **v1.5.0 — The "Adonis Alignment" (Current)**
+- **Vision**: Full structural alignment with AdonisJS v6.
+- **Features**: Dedicated Admin layouts, smart source auto-detection, and unified CLI-ready folder structure.
+
+### **v1.0.0 — The "Experimental Origin"**
+- **Vision**: "Experimental Open Source. Built for learning and fun."
+- **Features**: The birth of the `parser.js` engine and the first successful `SPAFrame` navigation. A pure exploration of "What makes a framework tick?"
+
+---
+
+## �🛠 Quick Start
 
 1. **Install Dependencies**: `npm install`
 2. **Launch Dev Server**: `npm run dev`
