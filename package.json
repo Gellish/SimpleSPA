@@ -7,8 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "create-admin": "node src/scripts/create-admin.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "test:watch": "vitest --watch",
+    "db:seed": "node database/seeders/index.js",
+    "db:seed:admin": "node database/seeders/seed-admin.js",
+    "db:seed:users": "node database/seeders/seed-user-test.js",
+    "create-admin": "node scripts/seed-admin.js"
   },
   "keywords": [],
   "author": "",
@@ -30,5 +36,9 @@
     "js-yaml": "^4.1.1",
     "marked": "^17.0.1",
     "vite": "^7.3.1"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^4.0.18",
+    "vitest": "^4.0.18"
   }
 }

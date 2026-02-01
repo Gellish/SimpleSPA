@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script type="module" src="/resources/assets/js/main.js"></script>
+</head>
+
+<body style="visibility: hidden;">
+    <div class="d-flex">
+        @include('/resources/views/includes/admin-sidebar.html')
+
+        <main id="spa-content" class="flex-grow-1 bg-light" style="height: 100vh; overflow-y: auto;">
+            <!-- @outlet -->
+        </main>
+    </div>
+
+    @include('/resources/views/includes/toast.html')
+</body>
+
+</html>

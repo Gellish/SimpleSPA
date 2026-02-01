@@ -1,0 +1,57 @@
+<title>Manage Users</title>
+
+<div class="p-4">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <h1 class="h3">Users</h1>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                </button>
+                <button class="btn btn-primary" onclick="window.location.href='/admin/edit/user'">
+                    <i class="bi bi-plus-lg"></i> New User
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-foreach="admin_users as user">
+                            <td class="fw-bold">{{ name }}</td>
+                            <td>{{ email }}</td>
+                            <td><span class="badge {{ roleBadge }}">{{ roleDisplay }}</span></td>
+                            <td><span class="badge {{ statusBadge }}">{{ statusDisplay }}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary"
+                                    onclick="window.location.href='/admin/edit/user/{{ id }}'">
+                                    Edit
+                                </button>
+                                <form data-action="delete-aggregate"
+                                    data-confirm="Are you sure you want to delete this user?" class="d-inline">
+                                    <input type="hidden" name="id" value="{{ id }}">
+                                    <input type="hidden" name="type" value="user">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

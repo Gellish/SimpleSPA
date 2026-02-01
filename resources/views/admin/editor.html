@@ -1,0 +1,18 @@
+<title>Universal Editor</title>
+
+<!-- External Dependencies -->
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="/resources/assets/css/editor.css">
+
+<!-- Declarative Component Shell -->
+<!-- The parser will identify data-component="editor" and hydrate it via src/assets/js/modules/editor.js -->
+<div data-component="editor" style="min-height: 80vh;">
+    <!-- Loading State (Replaced by Module) -->
+    <div class="d-flex justify-content-center align-items-center h-100 pt-5">
+        <div class="text-center text-muted">
+            <div class="spinner-border text-primary mb-2" role="status"></div>
+            <p>Loading Editor...</p>
+        </div>
+    </div>
+</div>

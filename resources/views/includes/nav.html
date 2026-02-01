@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 p-3 rounded">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="/">
+      <!-- <img src="/assets/images/profile_illustration.png" alt="Logo" width="30" height="30"
+        class="d-inline-block align-text-top me-2 rounded-circle bg-white"> -->
+      My App
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Main Navigation: Auto-highlights based on current path -->
+      <ul class="navbar-nav me-auto" data-auto-nav="main">
+        <li class="nav-item">
+          <a class="nav-link" href="/" data-nav-item>Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blog" data-nav-item>Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about" data-nav-item>About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact" data-nav-item>Contact</a>
+        </li>
+      </ul>
+
+      <!-- Auth Navigation: Auto-populated based on user state -->
+      <ul class="navbar-nav ms-auto" data-auth-nav>
+        <!-- Logged Out State (Default) -->
+        <li class="nav-item" data-auth-state="guest">
+          <a class="nav-link" href="/login">Login</a>
+        </li>
+        <li class="nav-item" data-auth-state="guest">
+          <a class="btn btn-outline-light ms-2" href="/signup">Sign Up</a>
+        </li>
+
+        <!-- Logged In State (Hidden by default, shown by parser) -->
+        <li class="nav-item dropdown d-none" data-auth-state="user">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span data-user-name>User</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="/profile" data-nav-item>Profile</a></li>
+            <li data-admin-only class="d-none"><a class="dropdown-item" href="/admin" data-nav-item>Dashboard</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#" data-action="logout">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

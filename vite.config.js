@@ -2,28 +2,55 @@ import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import fs from 'fs'
 import path from 'path'
-import { registerApiHandlers } from './src/lib/server/api-handlers.js'
-import { registerRouting } from './src/lib/server/spa-router.js'
+import { fileURLToPath } from 'url'
+import { registerApiHandlers } from './app/Controllers/ApiHandler.js'
+import { registerRouting } from './app/Lib/server/spa-router.js'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Helper to recursively process @include directives
 function processIncludes(html) {
-    return html.replace(/@include\(['"](.+?)['"]\)/g, (match, p1) => {
-        const filePath = resolve(__dirname, p1.startsWith('/') ? p1.slice(1) : p1);
+    const includeRegex = /@include\(['"](.+?)['"]\)/g;
+    let result = html;
+    let match;
+
+    while ((match = includeRegex.exec(html)) !== null) {
+        const fullMatch = match[0];
+        let includePath = match[1];
+
+        // Auto-migrate old src/ paths
+        if (includePath.startsWith('/src/')) includePath = includePath.replace('/src/', '/resources/');
+        if (includePath.startsWith('src/')) includePath = includePath.replace('src/', 'resources/');
+
+        const filePath = resolve(__dirname, includePath.startsWith('/') ? includePath.slice(1) : includePath);
+
         try {
             const content = fs.readFileSync(filePath, 'utf-8');
-            return processIncludes(content); // Recursive
+            // Use split/join instead of replace to avoid special character issues
+            result = result.split(fullMatch).join(content);
         } catch (e) {
             console.error(`Error including file: ${filePath}`, e);
-            return `<!-- Error including ${p1}: ${e.message} -->`;
+            const errorComment = `<!-- Error including ${includePath}: ${e.message} -->`;
+            result = result.split(fullMatch).join(errorComment);
         }
-    });
+    }
+
+    // Recursively process any new includes that were added
+    if (includeRegex.test(result) && result !== html) {
+        return processIncludes(result);
+    }
+
+    return result;
 }
 
 export default defineConfig({
     build: {
+        outDir: resolve(__dirname, 'public'),
+        emptyOutDir: true,
         rollupOptions: {
             input: {
-                main: resolve(__dirname, 'src/route/index.html'),
+                main: resolve(__dirname, 'resources/views/index.html'),
                 ...Object.fromEntries(
                     (function getHtmlFiles(dir, base = '') {
                         let results = [];
@@ -39,7 +66,7 @@ export default defineConfig({
                             }
                         }
                         return results;
-                    })(resolve(__dirname, 'src/route'))
+                    })(resolve(__dirname, 'resources/views'))
                 )
             },
         },
@@ -54,33 +81,57 @@ export default defineConfig({
 
                 // 2. Register API Handlers (/__api/...)
                 registerApiHandlers(server);
-            },
-            transformIndexHtml(html, ctx) {
-                let layoutPath = resolve(__dirname, 'src/app.html');
+                registerRouting(server);
+            }
+        },
+        {
+            name: 'html-transform',
+            transformIndexHtml: {
+                order: 'pre',
+                handler(html, { path: reqPath }) {
+                    // Skip layout wrapping for files that are already layout wrappers
+                    const skipLayoutPaths = [
+                        '/resources/views/layouts/',
+                        '/resources/views/app.html'
+                    ];
 
-                // Determine layout based on route
-                if (ctx.filename && (ctx.filename.includes('src/route/admin') || ctx.filename.includes('src\\route\\admin'))) {
-                    layoutPath = resolve(__dirname, 'src/admin.html');
-                } else if (ctx.originalUrl && ctx.originalUrl.startsWith('/admin')) {
-                    layoutPath = resolve(__dirname, 'src/admin.html');
+                    if (skipLayoutPaths.some(path => reqPath.includes(path))) {
+                        return processIncludes(html);
+                    }
+
+                    // Determine layout based on path
+                    let layoutFile = 'resources/views/app.html';
+                    if (reqPath.includes('/resources/views/admin/') || reqPath.includes('/resources/views/admin.html')) {
+                        layoutFile = 'resources/views/layouts/admin.html';
+                    }
+
+                    const layoutPath = resolve(__dirname, layoutFile);
+                    let layout = fs.readFileSync(layoutPath, 'utf-8');
+
+                    // Extract title from page
+                    const titleMatch = html.match(/<title>([\s\S]*?)<\/title>/i);
+                    const pageTitle = titleMatch ? titleMatch[1] : 'My App';
+
+                    // Remove title from content
+                    let pageContent = html.replace(/<title>[\s\S]*?<\/title>/i, '');
+
+                    if (pageTitle) {
+                        // Use split/join for title replacement
+                        const titleRegex = /<title>[\s\S]*?<\/title>/i;
+                        const layoutTitleMatch = layout.match(titleRegex);
+                        if (layoutTitleMatch) {
+                            layout = layout.split(layoutTitleMatch[0]).join(`<title>${pageTitle}</title>`);
+                        }
+                    }
+
+                    // Use split/join for outlet replacement to avoid special character issues
+                    let finalHtml = layout.split('<!-- @outlet -->').join(pageContent);
+
+                    // Process includes
+                    let processedHtml = processIncludes(finalHtml);
+
+                    return processedHtml;
                 }
-
-                if (!fs.existsSync(layoutPath)) return html;
-
-                let layout = fs.readFileSync(layoutPath, 'utf-8');
-                const titleMatch = html.match(/<title>(.*?)<\/title>/);
-                const pageTitle = titleMatch ? titleMatch[1] : null;
-                let pageContent = html.replace(/<title>.*?<\/title>/, '');
-
-                if (pageTitle) {
-                    layout = layout.replace(/<title>.*?<\/title>/, `<title>${pageTitle}</title>`);
-                }
-
-                let finalHtml = layout.replace('<!-- @outlet -->', pageContent);
-                let processedHtml = processIncludes(finalHtml);
-
-                // Prevent FOUC (Disabled for debugging blank page)
-                return processedHtml;
             }
         }
     ]

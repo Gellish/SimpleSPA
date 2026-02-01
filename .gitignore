@@ -7,7 +7,7 @@ node_modules
 .wrangler
 /.svelte-kit
 /build
-/dist
+/public
 
 # OS
 .DS_Store
@@ -23,4 +23,18 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Storage (runtime data - exclude from git)
+storage/events/aggregates/*
+storage/events/projections/*
+storage/logs/*
+storage/uploads/*
+storage/cache/*
+
+# Keep directory structure
+!storage/events/aggregates/.gitkeep
+!storage/events/projections/.gitkeep
+!storage/events/metadata/.gitkeep
+!storage/logs/.gitkeep
+!storage/uploads/.gitkeep
+!storage/cache/.gitkeep
 
