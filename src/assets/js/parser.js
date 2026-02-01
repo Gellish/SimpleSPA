@@ -238,46 +238,43 @@ const collections = {
   // 'admin_posts': Rich data for the admin table
   admin_posts: async () => {
     try {
-      // Re-use logic or just duplicate for safety/speed
-      const local = IncludeParser.getLocalPosts();
-
-      let db = [];
-      let events = [];
-
+      // 1. Fetch from DB
+      let dbPosts = [];
       try {
         const { postsService } = await import('/src/api/index.js');
-        if (postsService) db = await postsService.getAll().catch(e => []);
-      } catch (e) { }
+        if (postsService) dbPosts = await postsService.getAll();
+      } catch (e) {
+        console.warn('DB Fetch failed', e);
+      }
 
+      // 2. Fetch Local
+      const localPosts = IncludeParser.getLocalPosts();
+
+      // 3. Fetch Event Store
+      let eventPosts = [];
       try {
-        const res = await fetch('/__api/aggregates?t=' + Date.now());
+        const res = await fetch('/__api/aggregates?type=page');
         if (res.ok) {
           const data = await res.json();
-          events = (data.aggregates || []).map(a => ({ ...a.state, id: a.id, aggregateType: a.type, source: 'event-store' }));
+          eventPosts = data.aggregates.map(a => ({ ...a.state, id: a.id, source: 'event-store' }));
         }
       } catch (e) { }
 
-      // Combine
-      const all = [
-        ...db.map(p => ({ ...p, source: 'database' })),
-        ...local.map(p => ({ ...p, source: 'local' })),
-        ...events
-      ];
+      // Merge
+      const all = [...dbPosts.map(p => ({ ...p, source: 'database' })), ...localPosts.map(p => ({ ...p, source: 'local' })), ...eventPosts];
 
       return all.map(p => {
-        // Badge Logic
         let badgeClass = 'bg-secondary';
         let sourceLabel = 'Local';
-
         if (p.source === 'database') { badgeClass = 'bg-primary'; sourceLabel = 'DB'; }
-        else if (p.source === 'event-store') { badgeClass = 'bg-info'; sourceLabel = 'Event Store'; }
+        else if (p.source === 'event-store') { badgeClass = 'bg-info text-dark'; sourceLabel = 'Event Store'; }
 
-        // Tags
         let tagsHtml = '';
-        let tagList = Array.isArray(p.tags) ? p.tags : (p.tags ? p.tags.split(',') : []);
-        tagsHtml = tagList.map(t => `<span class="badge rounded-pill bg-light text-dark border me-1">${t.trim()}</span>`).join('');
+        if (p.tags) {
+          const list = Array.isArray(p.tags) ? p.tags : p.tags.split(',');
+          tagsHtml = list.map(t => `<span class="badge rounded-pill bg-light text-dark border me-1">${t.trim()}</span>`).join('');
+        }
 
-        // Edit Path
         let editUrl = `/admin/editor/${p.id || p.slug}`;
         if (p.source === 'local') editUrl += `?source=local&path=${encodeURIComponent(p.path)}`;
 
@@ -288,13 +285,37 @@ const collections = {
           source_badge: `<span class="badge ${badgeClass}">${sourceLabel}</span>`,
           tags_html: tagsHtml,
           path: p.path || '',
-          encoded_path: encodeURIComponent(p.path || ''),
+          encoded_path: p.path ? encodeURIComponent(p.path) : '',
           preview: p.description || (typeof p.content === 'string' ? p.content.substring(0, 50) + '...' : '(Content)'),
           edit_url: editUrl
         };
       });
+
     } catch (e) {
       console.error('admin_posts error', e);
+      return [];
+    }
+  },
+
+  admin_users: async () => {
+    try {
+      const res = await fetch('/__api/aggregates?type=user', { cache: 'no-store' });
+      if (!res.ok) return [];
+      const data = await res.json();
+
+      return (data.aggregates || []).map(a => {
+        const u = a.state;
+        return {
+          ...u,
+          id: a.id,
+          roleBadge: u.role === 'admin' ? 'bg-danger' : 'bg-primary',
+          statusBadge: u.status === 'active' ? 'bg-success' : 'bg-secondary',
+          roleDisplay: u.role || 'user',
+          statusDisplay: u.status || 'inactive'
+        };
+      });
+    } catch (e) {
+      console.error('Failed to load users', e);
       return [];
     }
   }
@@ -736,7 +757,23 @@ async function processFormsInDOM(root) {
             if (!res.ok) throw new Error('EventStore delete failed');
           }
 
-          // For delete, default to reload if no redirect specified
+          if (!redirect) {
+            window.location.reload();
+            return;
+          }
+        }
+        else if (action === 'delete-aggregate') {
+          const id = formData.get('id');
+          const type = formData.get('type');
+
+          const res = await fetch('/__api/events/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, id })
+          });
+
+          if (!res.ok) throw new Error('Delete failed');
+
           if (!redirect) {
             window.location.reload();
             return;
