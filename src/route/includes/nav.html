@@ -48,7 +48,7 @@
       const user = await authService.getCurrentUser();
 
       if (user) {
-        const name = user.user_metadata?.full_name || user.email;
+        const name = user.user_metadata?.full_name || user.user_metadata?.username || user.email;
         const isAdmin = user.user_metadata?.role === 'admin' || user.user_metadata?.role === 'superadmin';
 
         authNav.innerHTML = `
@@ -67,34 +67,77 @@
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
           await authService.logout();
-          window.location.href = '/';
+          if (window.SPAFrame) {
+            window.SPAFrame.navigate('/');
+          } else {
+            window.location.href = '/';
+          }
         });
+      } else {
+        authNav.innerHTML = `
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-light ms-2" href="/signup">Sign Up</a>
+          </li>
+        `;
       }
     } catch (e) {
       console.error('Auth check failed', e);
     }
   }
 
+  // Initial run
   updateAuthNav();
+
+  // Ensure we don't add the same listener multiple times when IncludeParser re-runs
+  window.removeEventListener('spa-navigated', updateAuthNav);
+  window.addEventListener('spa-navigated', updateAuthNav);
 </script>
 
 <script>
   (function () {
-    // Get current path, ignoring trailing slash for root
-    const path = window.location.pathname === '/' ? '/' : window.location.pathname.replace(/\/$/, '');
+    const updateNav = () => {
+      // Get current path, ignoring trailing slash for root
+      const path = window.location.pathname === '/' ? '/' : window.location.pathname.replace(/\/$/, '');
+      const links = document.querySelectorAll('.navbar-nav .nav-link, .navbar-nav .dropdown-item');
 
-    // Find link matching current path
-    const links = document.querySelectorAll('.navbar-nav .nav-link');
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      // Simple match: perfect match or (for /blog) starts with
-      if (href === path || (href !== '/' && path.startsWith(href))) {
-        link.classList.add('active');
-        link.style.fontWeight = 'bold'; // Make it pop
-      } else {
-        link.classList.remove('active');
-        link.style.fontWeight = 'normal';
-      }
-    });
+      links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        const cleanHref = href === '/' ? '/' : href.replace(/\/$/, '');
+        const isActive = (cleanHref === path) || (cleanHref !== '/' && path.startsWith(cleanHref));
+
+        if (isActive) {
+          link.classList.add('active');
+          if (link.classList.contains('nav-link')) link.style.fontWeight = 'bold';
+        } else {
+          link.classList.remove('active');
+          if (link.classList.contains('nav-link')) link.style.fontWeight = 'normal';
+        }
+      });
+    };
+
+    // Initial run
+    updateNav();
+
+    // Prevent accumulation of these listeners too
+    window.removeEventListener('spa-navigated', updateNav);
+    window.addEventListener('spa-navigated', updateNav);
+    window.removeEventListener('popstate', updateNav);
+    window.addEventListener('popstate', updateNav);
+
+    // One global click listener is fine as it's attached to document
+    if (!window._navClickHandled) {
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('.nav-link, .dropdown-item');
+        if (link && link.getAttribute('href')) {
+          setTimeout(updateNav, 0);
+        }
+      });
+      window._navClickHandled = true;
+    }
   })();
 </script>

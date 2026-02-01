@@ -1,65 +1,137 @@
-  body {
-      visibility: hidden;
-      /* Prevent FOUC, revealed by parser.js */
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-  }
+html {
+    scrollbar-gutter: stable;
+    overflow-y: scroll !important;
+    /* Force vertical scrollbar track to always exist */
+    height: 100%;
+}
 
-  nav {
-      background-color: #333;
-      padding: 10px;
-      margin: 0;
-  }
+body {
+    /* Font settings */
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
-  nav a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 15px;
-      margin-right: 10px;
-      display: inline-block;
-      border-radius: 4px;
-  }
+nav {
+    background-color: #333;
+    padding: 10px;
+    margin: 0;
+}
 
-  /* Custom Hover State */
-  .navbar-dark .navbar-nav .nav-link:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      /* Subtle hover effect */
-      color: #fff;
-      border-radius: 5px;
-  }
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    margin-right: 10px;
+    display: inline-block;
+    border-radius: 4px;
+}
 
-  /* Custom Active State for Bootstrap Navbar */
-  .navbar-dark .navbar-nav .nav-link.active {
-      background-color: rgba(255, 255, 255, 0.2);
-      /* Semi-transparent gray/white box */
-      color: #fff;
-      border-radius: 5px;
-  }
+/* Custom Hover State */
+.navbar-dark .navbar-nav .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Subtle hover effect */
+    color: #fff;
+    border-radius: 5px;
+}
 
-  .container {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 0 20px;
-  }
+/* Custom Active State for Bootstrap Navbar */
+.navbar-dark .navbar-nav .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    /* Semi-transparent gray/white box */
+    color: #fff;
+    border-radius: 5px;
+}
 
-  .blog-post {
-      background: white;
-      padding: 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
 
-  .blog-post h2 {
-      margin-top: 0;
-      color: #333;
-  }
+.blog-post {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .blog-date {
-      color: #666;
-      font-size: 0.9em;
-      margin-bottom: 10px;
-  }
+.blog-post h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.blog-date {
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+/* --- SPA Performance UI --- */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: 4px;
+    display: inline-block;
+    height: 1em;
+    width: 100%;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.row-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.table-responsive {
+    transition: opacity 0.3s ease;
+}
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.col-source {
+    width: 100px;
+}
+
+.col-title {
+    width: 30%;
+}
+
+.col-content {
+    width: auto;
+}
+
+.col-actions {
+    width: 150px;
+}

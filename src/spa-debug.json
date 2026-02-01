@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "11:51:43 AM",
+    "msg": "Flushing logs to server...",
+    "type": "info"
+  },
+  {
+    "timestamp": "11:51:41 AM",
+    "msg": "Debug mode enabled",
+    "type": "info"
+  }
+]

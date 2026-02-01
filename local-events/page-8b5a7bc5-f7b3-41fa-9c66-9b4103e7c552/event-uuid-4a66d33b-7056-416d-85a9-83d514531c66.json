@@ -1,0 +1,17 @@
+{
+  "eventId": "4a66d33b-7056-416d-85a9-83d514531c66",
+  "aggregateId": "8b5a7bc5-f7b3-41fa-9c66-9b4103e7c552",
+  "aggregateType": "page",
+  "eventType": "PAGE_UPDATED",
+  "payload": {
+    "title": "Local",
+    "date": "",
+    "tags": "Local",
+    "slug": "Local",
+    "description": "Local",
+    "content": "Local",
+    "updatedAt": "2026-01-30T04:20:48.596Z"
+  },
+  "version": 2,
+  "timestamp": "2026-01-31T05:12:13.001Z"
+}

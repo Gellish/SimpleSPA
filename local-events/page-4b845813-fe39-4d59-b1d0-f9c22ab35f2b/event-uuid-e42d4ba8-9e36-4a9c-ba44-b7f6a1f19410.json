@@ -1,0 +1,18 @@
+{
+  "eventId": "e42d4ba8-9e36-4a9c-ba44-b7f6a1f19410",
+  "aggregateId": "4b845813-fe39-4d59-b1d0-f9c22ab35f2b",
+  "aggregateType": "page",
+  "eventType": "PAGE_CREATED",
+  "payload": {
+    "title": "test",
+    "date": "",
+    "tags": [
+      "test"
+    ],
+    "slug": "test",
+    "description": "test",
+    "content": "test"
+  },
+  "version": 1,
+  "timestamp": "2026-01-31T05:43:22.940Z"
+}

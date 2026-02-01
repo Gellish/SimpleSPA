@@ -35,21 +35,42 @@
 
     <script>
         (function () {
-            const path = window.location.pathname === '/admin' || window.location.pathname === '/admin/'
-                ? '/admin'
-                : window.location.pathname.replace(/\/$/, '');
+            const updateSidebar = () => {
+                const currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+                const links = document.querySelectorAll('#adminSidebarNav .nav-link');
 
-            const links = document.querySelectorAll('#adminSidebarNav .nav-link');
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href === path) {
+                links.forEach(link => {
+                    const href = link.getAttribute('href').replace(/\/$/, '');
+                    // Exact match or sub-path match for admin sections
+                    const isActive = href === currentPath || (href !== '/admin' && currentPath.startsWith(href));
+
+                    if (isActive) {
+                        link.classList.add('active');
+                        link.classList.remove('text-white');
+                    } else {
+                        link.classList.remove('active');
+                        link.classList.add('text-white');
+                    }
+                });
+            };
+
+            // Instant highlight on click to feel faster
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('#adminSidebarNav .nav-link');
+                if (link) {
+                    document.querySelectorAll('#adminSidebarNav .nav-link').forEach(l => {
+                        l.classList.remove('active');
+                        l.classList.add('text-white');
+                    });
                     link.classList.add('active');
                     link.classList.remove('text-white');
-                } else {
-                    link.classList.remove('active');
-                    link.classList.add('text-white');
                 }
-            });
+            }, true);
+
+            // Initial and reactive updates
+            updateSidebar();
+            window.addEventListener('spa-navigated', updateSidebar);
+            window.addEventListener('popstate', updateSidebar);
         })();
     </script>
     <hr>
@@ -76,7 +97,11 @@
         try {
             await authService.logout();
             console.log('Logged out successfully');
-            window.location.href = '/login';
+            if (window.SPAFrame) {
+                window.SPAFrame.navigate('/login');
+            } else {
+                window.location.href = '/login';
+            }
         } catch (error) {
             console.error('Logout failed:', error);
             alert('Logout failed: ' + error.message);

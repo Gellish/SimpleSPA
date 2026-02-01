@@ -4,51 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
     <title>Single Page Application</title> <!-- Default Title -->
     <script type="module" src="/src/assets/js/main.js"></script>
 </head>
 
-<body>
-    @include('/src/route/includes/nav.html')
+<body style="visibility: hidden;">
+    <div class="d-flex flex-column min-vh-100">
+        @include('/src/route/includes/nav.html')
 
-    <div class="container">
-        <!-- @outlet -->
+        <main id="spa-content" class="flex-grow-1 container">
+            <!-- @outlet -->
+        </main>
+
+        <footer class="bg-light text-center py-3 mt-auto">
+            <p class="mb-0 text-muted">&copy; 2026 My App. All rights reserved.</p>
+        </footer>
     </div>
 
-    <!-- Toast Notifications Container -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
-        <div id="statusToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
-            aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                    aria-label="Close"></button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        window.showAlert = (message, type = 'success') => {
-            const toastEl = document.getElementById('statusToast');
-            const toastMsg = document.getElementById('toastMessage');
-            if (!toastEl || !toastMsg) return;
-
-            // Set color based on type
-            toastEl.className = `toast align-items-center text-white border-0 bg-${type === 'success' ? 'success' : 'danger'}`;
-            toastMsg.textContent = message;
-
-            // Ensure bootstrap is available
-            if (window.bootstrap) {
-                const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
-                toast.show();
-            } else {
-                // Fallback if bootstrap is not globally exposed yet (main.js handles import)
-                // In Vite, we often need to export it or use the imported version
-                toastEl.classList.add('show');
-                setTimeout(() => toastEl.classList.remove('show'), 3000);
-            }
-        };
-    </script>
+    @include('/src/route/includes/toast.html')
 </body>
 
 </html>

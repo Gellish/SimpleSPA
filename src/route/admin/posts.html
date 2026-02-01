@@ -1,360 +1,65 @@
 <title>Manage Posts</title>
 
+<!-- Header -->
 <div class="container-fluid">
     <div class="row mb-4">
         <div class="col-12 d-flex justify-content-between align-items-center">
             <h1 class="h3">Posts</h1>
-            <button class="btn btn-primary" onclick="window.location.href='/admin/editor'">
+            <a href="/admin/editor" class="btn btn-primary">
                 <i class="bi bi-plus-lg"></i> New Post
-            </button>
+            </a>
         </div>
     </div>
 
-    <!-- Stats or Filters could go here -->
-
-    <div class="card shadow-sm">
+    <!-- Table -->
+    <div class="card shadow-sm" style="min-height: 400px;">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover mb-0" id="postsTable">
+                <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">Source</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Content</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col" style="width: 10%">Source</th>
+                            <th scope="col" style="width: 35%">Title</th>
+                            <th scope="col" style="width: 35%">Content</th>
+                            <th scope="col" style="width: 20%">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="postsList">
-                        <tr>
-                            <td colspan="4" class="text-center py-4">Loading posts...</td>
+                    <!-- The parser will inject rows here iteratively -->
+                    <tbody>
+                        <tr class="align-middle" data-foreach="admin_posts as post">
+                            <td>{{source_badge}}</td>
+                            <td>
+                                <div class="fw-bold text-dark">{{title}}</div>
+                                <div class="mb-1">{{tags_html}}</div>
+                                <small class="text-muted d-block text-truncate"
+                                    style="max-width: 200px;">{{path}}</small>
+                            </td>
+                            <td class="text-muted">
+                                <small class="d-block text-truncate" style="max-width: 300px;">{{preview}}</small>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <a href="{{edit_url}}" class="btn btn-sm btn-outline-secondary">Edit</a>
+
+                                    <form data-action="delete-post"
+                                        data-confirm="Are you sure you want to delete this post?">
+                                        <input type="hidden" name="id" value="{{id}}">
+                                        <input type="hidden" name="source" value="{{source}}">
+                                        <input type="hidden" name="path" value="{{encoded_path}}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
+
                     </tbody>
                 </table>
+
+                <!-- Empty State Fallback (Visible if no rows rendered, though parser handles this better usually) -->
+                <div id="empty-state" class="d-none text-center py-5">
+                    <p class="text-muted">No posts found.</p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to delete this post? This action cannot be undone.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Help save context for clean URLs
-    window.setPostContext = (id, source, path) => {
-        sessionStorage.setItem('post_ctx_' + id, JSON.stringify({ source, path }));
-    };
-
-    window.copyToClipboard = (text, btn) => {
-        navigator.clipboard.writeText(text).then(() => {
-            const originalHtml = btn.innerHTML;
-            btn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-check-lg text-success" viewBox="0 0 16 16">
-                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                </svg> <span class="text-success">Copied!</span>
-            `;
-            setTimeout(() => {
-                btn.innerHTML = originalHtml;
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
-        // Stop propagation to prevent row click or other effects
-        if (event) event.stopPropagation();
-    };
-
-    // Critical: Render cached data synchronusly to prevent "Loading..." flash
-    (function () {
-        try {
-            const cached = sessionStorage.getItem('admin_posts_cache');
-            const postsList = document.getElementById('postsList');
-            if (cached && postsList) {
-                const data = JSON.parse(cached);
-                if (Array.isArray(data) && data.length > 0) {
-                    // Simple render loop (duplicated from main script for speed)
-                    postsList.innerHTML = data.map(post => {
-                        const rawContent = post.content || '';
-                        const textPreview = rawContent.substring(0, 100).replace(/</g, '&lt;') + (rawContent.length > 100 ? '...' : '');
-
-                        const sourceBadge = post.source === 'local'
-                            ? '<span class="badge bg-secondary">Offline Content</span>'
-                            : post.source === 'event-store'
-                                ? '<span class="badge bg-info">Event Store</span>'
-                                : '<span class="badge bg-primary">Database</span>';
-
-                        const isLocal = post.source === 'local' || post.source === 'event-store';
-
-                        return `
-                            <tr>
-                                <td>${sourceBadge}</td>
-                                <td class="fw-bold">
-                                    ${post.title || 'Untitled'}
-                                    ${isLocal ? `<br><small class="text-muted">${post.path}</small>` : ''}
-                                </td>
-                                <td class="text-muted"><small>${textPreview}</small></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-secondary" 
-                                        onclick="setPostContext('${post.id}', '${post.source}', '${post.path || ''}'); window.location.href='/admin/editor/${post.id}'">
-                                        Edit
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-danger" 
-                                        onclick="openDeleteModal('${post.id}', '${post.source}', '${encodeURIComponent(post.path || '')}')">
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        `;
-                    }).join('');
-                }
-            }
-        } catch (e) { console.error('Hydration error', e); }
-    })();
-</script>
-
-<script type="module">
-    import { postsService } from '/src/api/index.js';
-    import { IncludeParser } from '/src/assets/js/parser.js';
-    import { marked } from 'marked';
-    import { Modal } from 'bootstrap';
-
-    const postsList = document.getElementById('postsList');
-    let postToDeleteId = null;
-    let postToDeleteSource = null;
-    let postToDeletePath = null;
-    let deleteModal = null;
-
-    // Initialize modal on load
-
-    window.openDeleteModal = (id, source, path) => {
-        postToDeleteId = id;
-        postToDeleteSource = source;
-        postToDeletePath = decodeURIComponent(path || '');
-        if (!deleteModal) {
-            deleteModal = new Modal(document.getElementById('deleteModal'));
-        }
-        deleteModal.show();
-    };
-
-    document.getElementById('confirmDeleteBtn').addEventListener('click', async () => {
-        if (!postToDeleteId) return;
-
-        const btn = document.getElementById('confirmDeleteBtn');
-        btn.disabled = true;
-        btn.textContent = 'Deleting...';
-
-        try {
-            if (postToDeleteSource === 'database') {
-                await postsService.delete(postToDeleteId);
-            } else if (postToDeleteSource === 'local') {
-                const response = await fetch('/__api/delete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ path: postToDeletePath })
-                });
-                if (!response.ok) throw new Error('Local file deletion failed');
-            } else if (postToDeleteSource === 'event-store') {
-                const response = await fetch('/__api/events/delete', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'page', id: postToDeleteId })
-                });
-                if (!response.ok) throw new Error('Event store deletion failed');
-            }
-
-            deleteModal.hide();
-            await loadPosts(); // Refresh list
-        } catch (error) {
-            console.error('Delete failed:', error);
-            alert('Delete failed: ' + error.message);
-        } finally {
-            btn.disabled = false;
-            btn.textContent = 'Delete';
-            postToDeleteId = null;
-            postToDeleteSource = null;
-            postToDeletePath = null;
-        }
-    });
-
-    function renderPosts(posts) {
-        if (!posts || posts.length === 0) {
-            postsList.innerHTML = `
-                <tr>
-                    <td colspan="4" class="text-center py-4">No posts found.</td>
-                </tr>
-            `;
-            return;
-        }
-
-        // Use a document fragment for better performance if list is huge, 
-        // but simple .join('') is usually fine for < 1000 items. 
-        // KEY: Removing marked.parse() from the loop.
-
-        postsList.innerHTML = posts.map(post => {
-            // Cheap text preview: just take first 100 chars of raw content.
-            // Markdown usually is readable as text.
-            const rawContent = post.content || '';
-            const textPreview = rawContent.substring(0, 100).replace(/</g, '&lt;') + (rawContent.length > 100 ? '...' : '');
-
-            const sourceBadge = post.source === 'local'
-                ? '<span class="badge bg-secondary">Offline Content</span>'
-                : post.source === 'event-store'
-                    ? '<span class="badge bg-info">Event Store</span>'
-                    : '<span class="badge bg-primary">Database</span>';
-
-            const isLocal = post.source === 'local' || post.source === 'event-store';
-
-            return `
-                <tr>
-                    <td>${sourceBadge}</td>
-                    <td class="fw-bold">
-                        ${post.title || 'Untitled'}
-                        ${isLocal && post.path ? `<br><small class="text-muted">${post.path}</small>` : ''}
-                        ${post.source === 'event-store'
-                    ? `<br><button class="btn btn-link p-0 text-muted" style="font-size: 0.8rem; text-decoration: none;" onclick="copyToClipboard('${post.id}', this)" title="Copy ID">
-                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-files" viewBox="0 0 16 16">
-                                   <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1zM3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4z"/>
-                                 </svg> Copy ID
-                               </button>`
-                    : ''}
-                    </td>
-                    <td class="text-muted"><small>${textPreview}</small></td>
-                    <td>
-                        <button class="btn btn-sm btn-outline-secondary" 
-                            onclick="setPostContext('${post.id}', '${post.source}', '${post.path || ''}'); window.location.href='/admin/editor/${post.id}'">
-                            Edit
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger" 
-                            onclick="openDeleteModal('${post.id}', '${post.source}', '${encodeURIComponent(post.path || '')}')">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            `;
-        }).join('');
-    }
-
-    // Debug Log
-    console.log('[Admin] Posts script executing...', Date.now());
-
-    if (!postsList) {
-        console.error('[Admin] Critical Error: postsList element not found!');
-    }
-
-    // CACHE STRATEGY: Render cached data immediately
-    const CACHE_KEY = 'admin_posts_cache';
-    try {
-        const cached = sessionStorage.getItem(CACHE_KEY);
-        if (cached) {
-            console.log('[Admin] Rendering from cache');
-            const data = JSON.parse(cached);
-            if (Array.isArray(data) && data.length > 0) {
-                renderPosts(data);
-            }
-        }
-    } catch (e) { console.error('Cache read error', e); }
-
-    async function loadPosts() {
-        try {
-            // Parallel Fetch
-            const dbPromise = postsService.getAll().catch(err => {
-                console.error('Supabase fetch error:', err);
-                return [];
-            });
-
-            const localPromise = new Promise((resolve) => {
-                try {
-                    if (IncludeParser.getLocalPosts) {
-                        resolve(IncludeParser.getLocalPosts());
-                    } else {
-                        resolve([]);
-                    }
-                } catch (e) {
-                    console.error('Local fetch error:', e);
-                    resolve([]);
-                }
-            });
-
-            const eventStorePromise = fetch('/__api/aggregates?type=page&t=' + Date.now(), { cache: 'no-store' })
-                .then(res => {
-                    if (!res.ok) throw new Error('API failed');
-                    return res.json();
-                })
-                .then(data => {
-                    return (data.aggregates || []).map(a => ({
-                        id: a.id,
-                        title: a.state.title,
-                        content: a.state.content,
-                        source: 'event-store',
-                        path: '' // No path for event store items
-                    }));
-                })
-                .catch(err => {
-                    console.error('Event Store fetch error:', err);
-                    return [];
-                });
-
-            // Wait for all
-            const [dbData, localData, eventStoreData] = await Promise.all([
-                dbPromise,
-                localPromise,
-                eventStorePromise
-            ]);
-
-            const dbPosts = dbData.map(p => ({ ...p, source: 'database' }));
-            const allPosts = [...dbPosts, ...localData, ...eventStoreData];
-
-            // Update UI
-            renderPosts(allPosts);
-
-            // Update Cache
-            sessionStorage.setItem(CACHE_KEY, JSON.stringify(allPosts));
-
-        } catch (error) {
-            console.error('Error loading posts:', error);
-            // Only show error if list is empty (don't wipe cache on transient error)
-            if (postsList && postsList.children.length <= 1) {
-                postsList.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="text-center text-danger py-4">
-                            Failed to load posts: ${error.message}
-                        </td>
-                    </tr>
-                `;
-            }
-        }
-    }
-
-    // Load initial fresh data
-    loadPosts().catch(err => console.error('[Admin] loadPosts failed:', err));
-
-    // SPA ROBUSTNESS: Cleanup previous subscription if it exists
-    if (window.postsSubscription) {
-        try { window.postsSubscription.unsubscribe(); } catch (e) { }
-    }
-
-    // Realtime Subscription
-    try {
-        console.log('[Admin] Subscribing to realtime updates...');
-        window.postsSubscription = postsService.subscribe((payload) => {
-            console.log('[Admin] Realtime update received:', payload);
-            loadPosts();
-        });
-    } catch (e) {
-        console.error('[Admin] Realtime subscription failed:', e);
-    }
-</script>

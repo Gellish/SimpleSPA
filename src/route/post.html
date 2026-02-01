@@ -1,0 +1,46 @@
+<title>Post Viewer</title>
+
+<!-- 🎨 TEMPLATE: Universal Component with Auto-Binding -->
+<div id="post-view" class="container mt-5 d-none" data-context="current_post">
+    <!-- The content here works as a template. The Parser will fetch data and hydration {{ keys }} automatically. -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Title -->
+            <h1 class="fw-bold mb-3">{{ title }}</h1>
+
+            <!-- Metadata Line -->
+            <div class="d-flex justify-content-between align-items-center mb-4 text-muted">
+                <small>{{ date }}</small>
+                <span id="post-tags">{{ tags }}</span>
+            </div>
+
+            <!-- Content Body -->
+            <article class="blog-content">
+                {{ body }}
+            </article>
+
+            <hr class="my-5">
+
+            <!-- Navigation -->
+            <div class="text-center">
+                <a href="/blog" class="btn btn-outline-primary">← Back to Blog</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ⏳ LOADING STATE -->
+<div id="post-loading" class="container mt-5 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<!-- ⚠️ ERROR STATE -->
+<template id="error-template">
+    <div class="text-center py-5">
+        <h2 class="display-6 text-muted">Post Not Found</h2>
+        <p>The requested article could not be located.</p>
+        <a href="/blog" class="btn btn-primary mt-3">Back to Blog</a>
+    </div>
+</template>

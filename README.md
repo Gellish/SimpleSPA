@@ -4,6 +4,12 @@ A **lightweight Single Page Application micro-framework** built on **Vite**, **B
 
 ---
 
+## 📖 Documentation
+* [ARCHITECTURE.md](file:///d:/singlepageapplication/ARCHITECTURE.md) - Deep dive into the SPA logic, sync strategies, and Vite integration.
+* [journal.md](file:///d:/singlepageapplication/journal.md) - Common issues, mistakes, and lessons learned.
+
+---
+
 ## ✨ Features
 
 * ⚡ **Powered by Vite**
