@@ -1,5 +1,5 @@
 # 🚀 Vanilla SPA Framework: Offline-First Edition
-> **Latest: v1.5.0 "Adonis Alignment"** | **Origin: v1.0.0 "Experimental"**
+> **Latest: v1.2.0 "Adonis Alignment"** | **Origin: v1.0.0 "Experimental"**
 > *A technical exploration into high-performance, zero-dependency SPA architecture.*
 
 ---
@@ -58,7 +58,7 @@ The folder structure is strictly aligned with **AdonisJS v6** conventions to ens
 
 ## � Release History
 
-### **v1.5.0 — The "Adonis Alignment" (Current)**
+### **v1.2.0 — The "Adonis Alignment" (Current)**
 - **Vision**: Full structural alignment with AdonisJS v6.
 - **Features**: Dedicated Admin layouts, smart source auto-detection, and unified CLI-ready folder structure.
 
