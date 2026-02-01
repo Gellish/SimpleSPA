@@ -1,0 +1,20 @@
+
+> singlepageapplication@1.0.0 build
+> vite build
+
+failed to load config from D:\singlepageapplication\vite.config.js
+error during build:
+Error: Cannot find module '@app/Lib/server/api-router.js'
+Require stack:
+- D:\singlepageapplication\vite.config.js
+- D:\singlepageapplication\node_modules\vite\dist\node\chunks\config.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+    at Module._load (node:internal/modules/cjs/loader:1038:27)
+    at Module.require (node:internal/modules/cjs/loader:1289:19)
+    at require (node:internal/modules/helpers:182:18)
+    at Object.<anonymous> (D:\singlepageapplication\vite.config.js:42:25)
+    at Module._compile (node:internal/modules/cjs/loader:1521:14)
+    at _require.extensions.<computed> [as .js] (file:///D:/singlepageapplication/node_modules/vite/dist/node/chunks/config.js:35919:44)
+    at Module.load (node:internal/modules/cjs/loader:1266:32)
+    at Module._load (node:internal/modules/cjs/loader:1091:12)
+    at Module.require (node:internal/modules/cjs/loader:1289:19)

@@ -1,4 +1,4 @@
-import { supabase } from "../../lib/supabase";
+import { supabase } from "@app/Lib/supabase";
 
 const TABLE_NAME = 'profiles';
 

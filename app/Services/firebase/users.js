@@ -6,7 +6,7 @@ import {
     query,
     where
 } from "firebase/firestore";
-import { db } from "../../lib/firebase";
+import { db } from "@app/Lib/firebase";
 
 const COLLECTION_NAME = "users";
 

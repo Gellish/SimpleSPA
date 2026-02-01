@@ -1,0 +1,51 @@
+
+> singlepageapplication@1.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[plugin vite:dynamic-import-vars] resources/assets/js/parser.js: invalid import "/resources/assets/js/modules/${componentName}.js". Variable absolute imports are not supported, imports must start with ./ in the static part of the import. For example: import(`./foo/${bar}.js`).
+The glob option "as" has been deprecated in favour of "query". Please update `as: 'raw'` to `query: '?raw', import: 'default'`.
+[32mΓ£ô[39m 168 modules transformed.
+
+(!) The public directory feature may not work correctly. outDir D:\singlepageapplication\public and publicDir D:/singlepageapplication/public are not separate folders.
+
+rendering chunks...
+computing gzip size...
+[2mpublic/[22m[32mresources/views/layouts/admin.html           [39m[1m[2m  3.96 kB[22m[1m[22m[2m Γöé gzip:  1.33 kB[22m
+[2mpublic/[22m[32mresources/views/app.html                     [39m[1m[2m  4.10 kB[22m[1m[22m[2m Γöé gzip:  1.47 kB[22m
+[2mpublic/[22m[32mresources/views/includes/blog-card.html      [39m[1m[2m  4.39 kB[22m[1m[22m[2m Γöé gzip:  1.56 kB[22m
+[2mpublic/[22m[32mresources/views/demo.html                    [39m[1m[2m  4.53 kB[22m[1m[22m[2m Γöé gzip:  1.65 kB[22m
+[2mpublic/[22m[32mresources/views/includes/toast.html          [39m[1m[2m  4.62 kB[22m[1m[22m[2m Γöé gzip:  1.45 kB[22m
+[2mpublic/[22m[32mresources/views/index.html                   [39m[1m[2m  4.64 kB[22m[1m[22m[2m Γöé gzip:  1.67 kB[22m
+[2mpublic/[22m[32mresources/views/blog.html                    [39m[1m[2m  4.70 kB[22m[1m[22m[2m Γöé gzip:  1.66 kB[22m
+[2mpublic/[22m[32mresources/views/admin/editor.html            [39m[1m[2m  4.78 kB[22m[1m[22m[2m Γöé gzip:  1.59 kB[22m
+[2mpublic/[22m[32mresources/views/about.html                   [39m[1m[2m  5.30 kB[22m[1m[22m[2m Γöé gzip:  1.88 kB[22m
+[2mpublic/[22m[32mresources/views/admin/profile.html           [39m[1m[2m  5.64 kB[22m[1m[22m[2m Γöé gzip:  1.78 kB[22m
+[2mpublic/[22m[32mresources/views/post.html                    [39m[1m[2m  5.67 kB[22m[1m[22m[2m Γöé gzip:  2.00 kB[22m
+[2mpublic/[22m[32mresources/views/profile.html                 [39m[1m[2m  5.75 kB[22m[1m[22m[2m Γöé gzip:  1.89 kB[22m
+[2mpublic/[22m[32mresources/views/posts/[slug].html            [39m[1m[2m  5.76 kB[22m[1m[22m[2m Γöé gzip:  1.90 kB[22m
+[2mpublic/[22m[32mresources/views/contact.html                 [39m[1m[2m  5.91 kB[22m[1m[22m[2m Γöé gzip:  1.88 kB[22m
+[2mpublic/[22m[32mresources/views/includes/admin-nav.html      [39m[1m[2m  5.93 kB[22m[1m[22m[2m Γöé gzip:  1.86 kB[22m
+[2mpublic/[22m[32mresources/views/login.html                   [39m[1m[2m  6.00 kB[22m[1m[22m[2m Γöé gzip:  1.89 kB[22m
+[2mpublic/[22m[32mresources/views/signup.html                  [39m[1m[2m  6.40 kB[22m[1m[22m[2m Γöé gzip:  1.88 kB[22m
+[2mpublic/[22m[32mresources/views/admin/users.html             [39m[1m[2m  6.65 kB[22m[1m[22m[2m Γöé gzip:  1.89 kB[22m
+[2mpublic/[22m[32mresources/views/includes/nav.html            [39m[1m[2m  6.69 kB[22m[1m[22m[2m Γöé gzip:  1.48 kB[22m
+[2mpublic/[22m[32mresources/views/includes/admin-sidebar.html  [39m[1m[2m  6.74 kB[22m[1m[22m[2m Γöé gzip:  1.96 kB[22m
+[2mpublic/[22m[32mresources/views/admin/posts.html             [39m[1m[2m  7.11 kB[22m[1m[22m[2m Γöé gzip:  2.07 kB[22m
+[2mpublic/[22m[32mresources/views/admin.html                   [39m[1m[2m 10.31 kB[22m[1m[22m[2m Γöé gzip:  2.39 kB[22m
+[2mpublic/[22m[32massets/profile_illustration-BV-Y76mS.png     [39m[1m[2m370.72 kB[22m[1m[22m
+[2mpublic/[22m[32massets/admin-avatar-C2nh2j27.png             [39m[1m[2m478.42 kB[22m[1m[22m
+[2mpublic/[22m[35massets/editor-BZE1diF5.css                   [39m[1m[2m  1.65 kB[22m[1m[22m[2m Γöé gzip:  0.72 kB[22m
+[2mpublic/[22m[35massets/main-DJV0ShhP.css                     [39m[1m[2m232.32 kB[22m[1m[22m[2m Γöé gzip: 31.04 kB[22m
+[2mpublic/[22m[36massets/index-BB8f0vK4.js                     [39m[1m[2m  0.51 kB[22m[1m[22m[2m Γöé gzip:  0.29 kB[22m
+[2mpublic/[22m[36massets/includes/admin-nav-DaSdO0f0.js        [39m[1m[2m  0.56 kB[22m[1m[22m[2m Γöé gzip:  0.35 kB[22m
+[2mpublic/[22m[36massets/auth-Usrkfbbx.js                      [39m[1m[2m  1.02 kB[22m[1m[22m[2m Γöé gzip:  0.46 kB[22m
+[2mpublic/[22m[36massets/users-BhcdIiuW.js                     [39m[1m[2m  1.36 kB[22m[1m[22m[2m Γöé gzip:  0.50 kB[22m
+[2mpublic/[22m[36massets/posts-BtKNhIiC.js                     [39m[1m[2m  1.36 kB[22m[1m[22m[2m Γöé gzip:  0.51 kB[22m
+[2mpublic/[22m[36massets/ui-kLV-IEUo.js                        [39m[1m[2m  1.41 kB[22m[1m[22m[2m Γöé gzip:  0.63 kB[22m
+[2mpublic/[22m[36massets/profile-B-lMfagQ.js                   [39m[1m[2m  1.69 kB[22m[1m[22m[2m Γöé gzip:  0.82 kB[22m
+[2mpublic/[22m[36massets/admin/profile-BDj02a05.js             [39m[1m[2m  1.69 kB[22m[1m[22m[2m Γöé gzip:  0.82 kB[22m
+[2mpublic/[22m[36massets/Registry-Cpig0dgU.js                  [39m[1m[2m  4.38 kB[22m[1m[22m[2m Γöé gzip:  1.54 kB[22m
+[2mpublic/[22m[36massets/main-BP1oE3iZ.js                      [39m[1m[2m192.09 kB[22m[1m[22m[2m Γöé gzip: 60.54 kB[22m
+[32mΓ£ô built in 1.73s[39m

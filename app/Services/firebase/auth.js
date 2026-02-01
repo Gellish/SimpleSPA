@@ -3,7 +3,7 @@ import {
     signOut,
     onAuthStateChanged
 } from "firebase/auth";
-import { auth } from "../../lib/firebase";
+import { auth } from "@app/Lib/firebase";
 
 export const authService = {
     /**
