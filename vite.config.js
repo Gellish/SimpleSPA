@@ -19,7 +19,8 @@ function processIncludes(html) {
         const fullMatch = match[0];
         let includePath = match[1];
 
-        // Auto-migrate old src/ paths
+        // Normalize slashes for Linux compatibility and Auto-migrate old src/ paths
+        includePath = includePath.replace(/\\/g, '/');
         if (includePath.startsWith('/src/')) includePath = includePath.replace('/src/', '/resources/');
         if (includePath.startsWith('src/')) includePath = includePath.replace('src/', 'resources/');
 
@@ -45,6 +46,14 @@ function processIncludes(html) {
 }
 
 export default defineConfig({
+    resolve: {
+        alias: {
+            '@': resolve(__dirname, 'resources'),
+            '@app': resolve(__dirname, 'app'),
+            '@views': resolve(__dirname, 'resources/views'),
+            '@assets': resolve(__dirname, 'resources/assets')
+        }
+    },
     build: {
         outDir: resolve(__dirname, 'public'),
         emptyOutDir: true,
