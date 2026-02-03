@@ -1,4 +1,4 @@
-# @gellish/micro-framework - Professional Showcase Edition 🚀
+# MicroFramework 🚀
 
 A high-performance, standalone Single Page Application (SPA) engine designed for modern web exploration and instant content delivery.
 
@@ -43,4 +43,3 @@ Check out the full [Technical Documentation Portal](https://github.com/Gellish/M
 
 ## ⚖️ License
 Licensed under the **Apache License, Version 2.0**.
-Created by **Gellish Garner Mangubat**.
