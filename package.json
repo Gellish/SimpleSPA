@@ -1,6 +1,26 @@
 {
-    "name": "simplewebsite",
+    "name": "@gellish/micro-framework",
     "version": "1.0.0",
+    "description": "A high-performance, standalone Zero-Reload SPA framework for modern web exploration.",
+    "main": "assets/js/micro.js",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Gellish/MicroFramework.git"
+    },
+    "keywords": [
+        "spa",
+        "framework",
+        "micro",
+        "zero-reload",
+        "performance"
+    ],
+    "author": "Gellish Garner Mangubat",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/Gellish/MicroFramework/issues"
+    },
+    "homepage": "https://github.com/Gellish/MicroFramework#readme",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
