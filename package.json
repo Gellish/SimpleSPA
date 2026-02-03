@@ -4,6 +4,11 @@
     "description": "A high-performance, standalone Zero-Reload SPA framework for modern web exploration.",
     "main": "assets/js/micro.js",
     "type": "module",
+    "files": [
+        "assets/js/micro.js",
+        "README.md",
+        "LICENSE"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Gellish/MicroFramework.git"

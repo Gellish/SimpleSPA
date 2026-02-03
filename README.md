@@ -1,61 +1,46 @@
-# micro.js - Ultra-lightweight SPA Framework
+# @gellish/micro-framework - Professional Showcase Edition 🚀
 
-`micro.js` is a minimalist Single Page Application (SPA) library designed for speed, simplicity, and zero dependencies. It provides seamless page transitions by intercepting link clicks and dynamically swapping content without a full browser reload.
+A high-performance, standalone Single Page Application (SPA) engine designed for modern web exploration and instant content delivery.
 
-## Core Features
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-- **🚀 Instant Navigation**: Intercepts `<a>` tags to fetch and swap content without reloading the page.
-- **📦 Smart Caching**: Automatically caches fetched pages to ensure near-instant back/forward navigation.
-- **🔍 Auto-Content Detection**: Intelligently finds the main content area (prioritizes `<main>`, then `[role="main"]`, `#spa-content`, etc.) to perform the swap.
-- **🎨 State Synchronization**: Syncs `document.title` and `body.className` between pages to maintain page-specific styles and SEO.
-- **🔗 Active Link Tracking**: Automatically updates the `.active` class on navigation links based on the current URL.
-- **🛑 Security First**: Built-in protection against the `file://` protocol to prevent CORS issues in local development.
+## 📦 Installation
 
-## How It Works
-
-1.  **Intercept**: The framework listens for clicks on internal links.
-2.  **Fetch**: When a link is clicked, it fetches the target HTML in the background.
-3.  **Parse**: It uses the browser's `DOMParser` to extract the new content.
-4.  **Swap**: It replaces the content of the current `<main>` element with the new content.
-5.  **History**: It updates the browser history using the `history.pushState` API.
-
-## Usage
-
-### 1. Structure your HTML
-Ensure your pages have a `<main>` tag or a div with `id="content"` where the dynamic content will reside.
-
-```html
-<body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-    </nav>
-    <main>
-        <!-- Dynamic content goes here -->
-    </main>
-    <script type="module" src="assets/js/main.js"></script>
-</body>
+```bash
+npm install @gellish/micro-framework
 ```
 
-### 2. Initialize the Framework
-In your `main.js`, simply import and call `init()`.
+## 🚀 Key Features
+
+- **⚡ Instant Navigation**: Zero-reload content swapping using the Fetch-Parse-Swap lifecycle.
+- **📊 Performance Dashboard**: Built-in support for real-time navigation logging and system monitoring.
+- **🛡️ Multi-Stage Status**: Integrated status badge with distinct states (`SYNCED`, `FETCHING`, `ONLINE`).
+- **🔗 Custom Events**: Dispatches `spa:navigated` events for total UI synchronization.
+- **🍱 Clean SEO**: Automatic synchronization of `document.title`, `body.className`, and container state.
+
+## 🛠️ Usage
+
+### 1. Initialize
+Import the ESM-ready core and initialize the lifecycle.
 
 ```javascript
-import SPA from './micro.js';
-
+import SPA from '@gellish/micro-framework';
 SPA.init();
 ```
 
-## Security Considerations
+### 2. Monitor Events
+Listen to the technical pulse of your application.
 
-> [!IMPORTANT]
-> Because `micro.js` uses the `fetch` API, it **requires a web server** to run. Opening `index.html` directly from your file system (`file:///`) will be blocked by the browser's security policy.
+```javascript
+window.addEventListener('spa:navigated', (e) => {
+    const { url, time } = e.detail;
+    console.log(`System Online: ${url} at ${time}`);
+});
+```
 
-## Technical Details
+## 📜 Documentation
+Check out the full [Technical Documentation Portal](https://github.com/Gellish/MicroFramework/blob/main/docs.html) for Architecture details and API Reference.
 
-The framework uses an "Auto-Swap" logic to find the best container for content replacement. It searches in the following order:
-1. `<main>`
-2. `[role="main"]`
-3. `#spa-content`
-4. `#content`
-5. The first large `<div>` that is not a `<nav>` or `<header>`.
+## ⚖️ License
+Licensed under the **Apache License, Version 2.0**.
+Created by **Gellish Garner Mangubat**.
