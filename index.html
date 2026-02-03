@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MicroFramework Blog - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <main>
+        <nav>
+            <a href="index.html" class="active">Home</a>
+            <a href="about.html">About</a>
+            <a href="docs.html">Docs</a>
+        </nav>
+        <div class="container">
+            <header class="hero">
+                <span class="section-tag">High Performance SPA</span>
+                <h1>Next-Gen MicroFramework</h1>
+                <p>Experience the web without reloads. <strong>micro.js</strong> delivers instant transitions,
+                    intelligent caching, and absolute simplicity.</p>
+                <div class="mt-40">
+                    <a href="about.html" class="btn">Explore the Core</a>
+                    <a href="docs.html" class="ml-20 text-muted no-underline font-600">View Documentation →</a>
+                </div>
+            </header>
+
+            <!-- SPA Showcase Dashboard -->
+            <section class="showcase-dashboard">
+                <div class="dash-header">
+                    <span class="dash-label">System Performance Monitor</span>
+                    <span id="spa-status-text" class="text-green">ACTIVE</span>
+                </div>
+                <div id="spa-log" class="dash-log">
+                    <div class="log-entry">> Initializing micro.js core...</div>
+                    <div class="log-entry">> Core Synced. Ready for interception.</div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-container">
+                <span class="section-tag">Efficiency Redefined</span>
+                <h2 class="section-title">Built for the Modern Web</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="glow-bg"></div>
+                        <span class="feature-icon">🚀</span>
+                        <h3>Instant Load</h3>
+                        <p>Zero full-page reloads. Only the content you need is swapped, ensuring sub-second
+                            transitions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="glow-bg"></div>
+                        <span class="feature-icon">📦</span>
+                        <h3>Smart Caching</h3>
+                        <p>Automatically caches visited pages. Back and forward navigation is immediate and
+                            offline-friendly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="glow-bg"></div>
+                        <span class="feature-icon">🔍</span>
+                        <h3>Auto-Swap</h3>
+                        <p>Intelligent container detection. No configuration needed—it just finds your content and swaps
+                            it.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="blog-grid mt-40 border-t pt-80">
+                <!-- Blog Header -->
+                <div class="grid-col-all mb-20">
+                    <span class="section-tag text-left">Latest Insights</span>
+                    <h2 class="mt-10">From the Lab</h2>
+                </div>
+
+                <!-- Post 1 -->
+                <a href="post-1.html" class="post-card">
+                    <div class="post-date">Feb 3, 2026</div>
+                    <h2 class="post-title">The Future of Minimalist Frameworks</h2>
+                    <p class="post-excerpt">Why less is more in the age of bloated web applications.</p>
+                    <div class="post-footer">
+                        <span class="read-more">Read Story →</span>
+                    </div>
+                </a>
+
+                <!-- Post 2 -->
+                <a href="#" class="post-card">
+                    <div class="post-date">Jan 28, 2026</div>
+                    <h2 class="post-title">Mastering SPA Navigation</h2>
+                    <p class="post-excerpt">A deep dive into intercepting links and managing history.</p>
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <script type="module">
+        import SPA from './assets/js/micro.js';
+
+        // Listen for SPA events to update the dashboard
+        window.addEventListener('spa:navigated', (e) => {
+            const log = document.getElementById('spa-log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `> [${e.detail.time}] Successfully swapped: ${e.detail.url}`;
+            log.prepend(entry);
+        });
+
+        SPA.init();
+    </script>
+</body>
+
+</html>

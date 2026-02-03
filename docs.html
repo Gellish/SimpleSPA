@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - MicroFramework</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body class="docs-page">
+    <main class="docs-wrapper">
+        <aside class="docs-sidebar">
+            <div class="docs-nav">
+                <span class="docs-nav-label">Navigation</span>
+                <a href="index.html" class="docs-nav-item">← Back Home</a>
+                <a href="about.html" class="docs-nav-item">About Framework</a>
+
+                <span class="docs-nav-label">Documentation</span>
+                <a href="#introduction" class="docs-nav-item active">Core Concepts</a>
+                <a href="#how-it-works" class="docs-nav-item">Architecture</a>
+                <a href="#api-reference" class="docs-nav-item">API Reference</a>
+                <a href="#custom-events" class="docs-nav-item">Event System</a>
+                <a href="#security" class="docs-nav-item">Security & CORS</a>
+            </div>
+        </aside>
+
+        <article class="docs-content">
+            <header class="docs-section" id="introduction">
+                <h1>Technical<br>Documentation</h1>
+                <p>Master the <strong>micro.js</strong> standalone framework. A high-performance, Zero-Reload engine
+                    designed for modern web exploration and instant content delivery.</p>
+            </header>
+
+            <section class="docs-section" id="how-it-works">
+                <h2>Architecture</h2>
+                <p>At its core, the framework uses a <strong>Fetch-Parse-Swap</strong> lifecycle. It overrides default
+                    browser navigation to provide an app-like feel while maintaining the simplicity of static HTML.</p>
+                <div class="feature-card">
+                    <ol>
+                        <li><strong>Intercept:</strong> The global click listener catches <code>&lt;a&gt;</code>
+                            interactions.</li>
+                        <li><strong>Fetch:</strong> Target HTML is retrieved asynchronously via the Fetch API.</li>
+                        <li><strong>Parse:</strong> The raw HTML response is converted into a DOM Document.</li>
+                        <li><strong>Swap:</strong> The content container (<code>&lt;main&gt;</code>) is updated with new
+                            content.</li>
+                        <li><strong>Sync:</strong> Page title, body classes, and container classes are synchronized.
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="docs-section" id="api-reference">
+                <h2>API Reference</h2>
+                <p>The <code>SPA</code> object provides total control over the navigation state.</p>
+
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="api-type">init()</span></td>
+                            <td>Initializes framework listeners and security checks.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="api-type">navigate(url, push)</span></td>
+                            <td>Performs a programmatic SPA navigation.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="api-type">updateActiveLinks()</span></td>
+                            <td>Refreshes <code>.active</code> status on navigation links.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Usage Example</h3>
+                <pre><code><span class="code-token-keyword">import</span> SPA <span class="code-token-keyword">from</span> <span class="code-token-string">'./assets/js/micro.js'</span>;
+SPA.<span class="code-token-func">init</span>();</code></pre>
+            </section>
+
+            <section class="docs-section" id="custom-events">
+                <h2>Event System</h2>
+                <p>Integrate with navigation lifecycle events to build dynamic UI components like progress bars or
+                    status badges.</p>
+
+                <pre><code>window.<span class="code-token-func">addEventListener</span>(<span class="code-token-string">'spa:navigated'</span>, (e) => {
+    <span class="code-token-keyword">const</span> { url, time } = e.detail;
+    console.<span class="code-token-func">log</span>(<span class="code-token-string">`Navigated to ${url}`</span>);
+});</code></pre>
+            </section>
+
+            <section class="docs-section" id="security">
+                <h2>Security & CORS</h2>
+                <p>Standard security policies apply. SPA navigation requires a local server context.</p>
+                <div class="alert-danger">
+                    <p class="alert-title">PROTOCOL ERROR</p>
+                    <p class="m-0">Navigation will fallback to standard reload if running on the <code>file://</code>
+                        protocol. Use a local server (Vite/LiveServer) for the full SPA experience.</p>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <script type="module">
+        import SPA from './assets/js/micro.js';
+        SPA.init();
+
+        const sections = document.querySelectorAll('.docs-section');
+        const navItems = document.querySelectorAll('.docs-nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
